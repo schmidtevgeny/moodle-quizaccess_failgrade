@@ -89,6 +89,13 @@ class quizaccess_failgrade extends quiz_access_rule_base {
      * attempt at this quiz.
      */
     public function is_finished($numprevattempts, $lastattempt) {
+        global $DB;
+        $manual = $DB->record_exists('quiz_attempts',['userid'=>$lastattempt->userid,
+            'quiz'=>$this->quiz->id,
+            'sumgrades'=>null
+            ]);
+        if ($manual) return true;
+
         $item = grade_item::fetch([
             'courseid' => $this->quiz->course,
             'itemtype' => 'mod',
