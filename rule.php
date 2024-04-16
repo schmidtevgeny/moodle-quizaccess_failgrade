@@ -92,6 +92,7 @@ class quizaccess_failgrade extends quiz_access_rule_base {
         global $DB;
         $manual = $DB->record_exists('quiz_attempts',['userid'=>$lastattempt->userid,
             'quiz'=>$this->quiz->id,
+            'state'=>'finished',
             'sumgrades'=>null
             ]);
         if ($manual) return true;
