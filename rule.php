@@ -60,6 +60,13 @@ class quizaccess_failgrade extends quiz_access_rule_base {
      *      reason if access should be prevented.
      */
     public function prevent_new_attempt($numprevattempts, $lastattempt) {
+        global $CFG;
+        require_once($CFG->dirroot . '/local/tsu/locklib.php');
+        $lock_status = local_tsu_lock_status();
+        if ($lock_status) {
+            if ($lock_status==LOCAL_TSU_LOCK_MONEY) return 'С финансовой задолженностью сдача недоступна/';
+            return 'В данный момент сдача недоступна';
+        }
         if ($this->is_finished($numprevattempts, $lastattempt)) {
             return get_string('preventmoreattempts', 'quizaccess_failgrade');
         }
